@@ -1,0 +1,24 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/builtin-metric-filters": {
+            "get": {
+                "description": "从系统中获取内置的度量过滤器信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "内置度量过滤器管理"
+                ],
+                "summary": "获取内置度量过滤器",
+                "responses": {}
+            }
+        }
+    }
+}

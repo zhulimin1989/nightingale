@@ -7,6 +7,12 @@ import (
 	"github.com/toolkits/pkg/ginx"
 )
 
+// @Summary 获取内置度量过滤器
+// @Description 从系统中获取内置的度量过滤器信息
+// @Tags 内置度量过滤器管理
+// @Accept  json
+// @Produce  json
+// @Router /builtin-metric-filters [get]
 func (rt *Router) metricFilterGets(c *gin.Context) {
 	lst, err := models.MetricFilterGets(rt.Ctx, "")
 	ginx.Dangerous(err)

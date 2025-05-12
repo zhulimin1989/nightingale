@@ -2,6 +2,8 @@ package router
 
 import (
 	"fmt"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"net/http"
 	"path"
 	"runtime"
@@ -231,6 +233,9 @@ func (rt *Router) Config(r *gin.Engine) {
 			pages.POST("/fields", rt.QueryFields)
 			pages.POST("/log-query", rt.QueryLog)
 		}
+
+		// 接口文档注释
+		pages.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 		pages.GET("/sql-template", rt.QuerySqlTemplate)
 		pages.POST("/auth/login", rt.jwtMock(), rt.loginPost)

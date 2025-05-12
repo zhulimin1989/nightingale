@@ -68,6 +68,7 @@ func (rt *Router) proxyAuth() gin.HandlerFunc {
 
 // tokenAuth 支持两种方式的认证，固定 token 和 jwt token
 // 因为不太好区分用户使用哪个方式，所以两种方式放在一个中间件里
+// @Security ApiKeyAuth
 func (rt *Router) tokenAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// 先验证固定 token
@@ -121,6 +122,9 @@ func (rt *Router) Auth() gin.HandlerFunc {
 	return rt.auth()
 }
 
+// func (rt *Router) auth() gin.HandlerFunc
+
+// @Security ApiKeyAuth
 func (rt *Router) auth() gin.HandlerFunc {
 	if rt.HTTP.ProxyAuth.Enable {
 		return rt.proxyAuth()
@@ -153,6 +157,9 @@ func (rt *Router) User() gin.HandlerFunc {
 	return rt.user()
 }
 
+// func (rt *Router) user() gin.HandlerFunc
+
+// @Security ApiKeyAuth
 func (rt *Router) user() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		username := c.MustGet("username").(string)
