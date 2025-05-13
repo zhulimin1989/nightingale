@@ -18,6 +18,7 @@ import (
 	"os/exec"
 	"path"
 	"regexp"
+	"runtime"
 	"sort"
 	"strconv"
 	"strings"
@@ -258,7 +259,13 @@ func getStdinBytes(events []*AlertCurEvent, tpl map[string]interface{}, params m
 }
 
 func startCmd(c *exec.Cmd) error {
-	c.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
+	if runtime.GOOS != "windows" {
+		// Unix/Linux 系统下的代码 add by zhulimin 2025-05-13 10:00:00
+		//c.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
+	} else {
+		// Windows 系统下的代码
+		c.SysProcAttr = &syscall.SysProcAttr{}
+	}
 	return c.Start()
 }
 

@@ -413,6 +413,14 @@ func (rt *Router) loginRedirectOAuth(c *gin.Context) {
 	ginx.NewRender(c).Data(redirect, err)
 }
 
+// Get 登录回调
+// @Summary 登录回调
+// @Description 获取JSON
+// @Tags 菜单
+// @Param id path string false "id"
+// @Success 200 {object} router.CallbackOutput "{"code": 200, "data": [...]}"
+// @Router /api/n9e/auth/callback/oauth [get]
+// @Security Bearer
 func (rt *Router) loginCallbackOAuth(c *gin.Context) {
 	code := ginx.QueryStr(c, "code", "")
 	state := ginx.QueryStr(c, "state", "")

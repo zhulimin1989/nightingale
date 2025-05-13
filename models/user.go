@@ -65,28 +65,56 @@ var (
 	DefaultContacts = []string{DingtalkKey, WecomKey, FeishuKey, MmKey, TelegramKey, LarkKey}
 )
 
+// User 用户模型。
+// swagger:model
 type User struct {
-	Id             int64           `json:"id" gorm:"primaryKey"`
-	Username       string          `json:"username"`
-	Nickname       string          `json:"nickname"`
-	Password       string          `json:"-"`
-	Phone          string          `json:"phone"`
-	Email          string          `json:"email"`
-	Portrait       string          `json:"portrait"`
-	Roles          string          `json:"-"`              // 这个字段写入数据库
-	RolesLst       []string        `json:"roles" gorm:"-"` // 这个字段和前端交互
-	TeamsLst       []int64         `json:"-" gorm:"-"`     // 这个字段方便映射团队，前端和数据库都不用到
-	Contacts       ormx.JSONObj    `json:"contacts"`       // 内容为 map[string]string 结构
-	Maintainer     int             `json:"maintainer"`     // 是否给管理员发消息 0:not send 1:send
-	CreateAt       int64           `json:"create_at"`
-	CreateBy       string          `json:"create_by"`
-	UpdateAt       int64           `json:"update_at"`
-	UpdateBy       string          `json:"update_by"`
-	Belong         string          `json:"belong"`
-	Admin          bool            `json:"admin" gorm:"-"` // 方便前端使用
-	UserGroupsRes  []*UserGroupRes `json:"user_groups" gorm:"-"`
-	BusiGroupsRes  []*BusiGroupRes `json:"busi_groups" gorm:"-"`
-	LastActiveTime int64           `json:"last_active_time"`
+	// 用户ID
+	// swagger:strfmt int64
+	Id int64 `json:"id" gorm:"primaryKey"`
+	// 用户名
+	Username string `json:"username"`
+	// 昵称
+	Nickname string `json:"nickname"`
+	// 密码
+	Password string `json:"-"`
+	// 手机号码
+	Phone string `json:"phone"`
+	// 邮箱
+	Email string `json:"email"`
+	// 头像URL
+	Portrait string `json:"portrait"`
+	// 角色(仅用于数据库写入)
+	Roles string `json:"-"` // 这个字段写入数据库
+	//角色列表(用于与前端交互)
+	RolesLst []string `json:"roles" gorm:"-"` // 这个字段和前端交互
+	// 团队列表（方便映射团队，不用于前端和数据库交互）
+	TeamsLst []int64 `json:"-" gorm:"-"` // 这个字段方便映射团队，前端和数据库都不用到
+	// 联系方式（内容为 map[string]string 结构）
+	// 注意：这里我们明确指定其类型为 json.RawMessage，以便 swag 能正确识别。
+	// @param Contacts.body.json.type json.RawMessage
+	Contacts ormx.JSONObj `json:"contacts"` // 内容为 map[string]string 结构
+	// 是否给管理员发消息（0:not send 1:send）
+	Maintainer int `json:"maintainer"` // 是否给管理员发消息 0:not send 1:send
+	// 创建时间戳
+	// swagger:strfmt int64
+	CreateAt int64 `json:"create_at"`
+	// 创建者
+	CreateBy string `json:"create_by"`
+	// 更新时间戳
+	// swagger:strfmt int64
+	UpdateAt int64 `json:"update_at"`
+	// 更新者
+	UpdateBy string `json:"update_by"`
+	// 归属信息
+	Belong string `json:"belong"`
+	// 是否为管理员(方便前端使用)
+	Admin bool `json:"admin" gorm:"-"` // 方便前端使用
+	// 用户组资源
+	UserGroupsRes []*UserGroupRes `json:"user_groups" gorm:"-"`
+	// 业务组资源
+	BusiGroupsRes []*BusiGroupRes `json:"busi_groups" gorm:"-"`
+	// 最后活跃时间戳
+	LastActiveTime int64 `json:"last_active_time"`
 }
 
 type UserGroupRes struct {

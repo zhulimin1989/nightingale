@@ -10,22 +10,54 @@ const (
 )
 
 type Stats struct {
-	AlertNotifyTotal            *prometheus.CounterVec
-	AlertNotifyErrorTotal       *prometheus.CounterVec
-	CounterAlertsTotal          *prometheus.CounterVec
-	GaugeAlertQueueSize         prometheus.Gauge
-	CounterRuleEval             *prometheus.CounterVec
-	CounterQueryDataErrorTotal  *prometheus.CounterVec
-	CounterQueryDataTotal       *prometheus.CounterVec
-	CounterVarFillingQuery      *prometheus.CounterVec
-	CounterRecordEval           *prometheus.CounterVec
+
+	// Counter	channel	告警通知发送总数（按通知渠道分类，如Email、Slack等）
+	AlertNotifyTotal *prometheus.CounterVec
+
+	// Counter	channel	告警通知发送失败次数（按通知渠道分类）
+	AlertNotifyErrorTotal *prometheus.CounterVec
+
+	// Counter	cluster, type, busi_group	产生的告警事件总数（按集群、类型、业务组分类）
+	CounterAlertsTotal *prometheus.CounterVec
+
+	// Gauge - 内存中告警事件队列的当前大小
+	GaugeAlertQueueSize prometheus.Gauge
+
+	// Counter - 规则评估总数（所有规则评估的总次数）
+	CounterRuleEval *prometheus.CounterVec
+
+	// Counter	datasource	数据查询失败次数（按数据源分类）
+	CounterQueryDataErrorTotal *prometheus.CounterVec
+
+	// Counter	datasource, rule_id	数据查询总次数（按数据源、规则ID分类）
+	CounterQueryDataTotal *prometheus.CounterVec
+
+	// Counter	rule_id, datasource_id, ref, type 变量填充查询次数（按规则ID、数据源ID、引用、类型分类）
+	CounterVarFillingQuery *prometheus.CounterVec
+
+	//Counter	datasource	记录评估总次数（按数据源分类）
+	CounterRecordEval *prometheus.CounterVec
+
+	// Counter	datasource	记录评估失败次数（按数据源分类）
 	CounterRecordEvalErrorTotal *prometheus.CounterVec
-	CounterMuteTotal            *prometheus.CounterVec
-	CounterRuleEvalErrorTotal   *prometheus.CounterVec
-	CounterHeartbeatErrorTotal  *prometheus.CounterVec
-	CounterSubEventTotal        *prometheus.CounterVec
-	GaugeQuerySeriesCount       *prometheus.GaugeVec
-	GaugeNotifyRecordQueueSize  prometheus.Gauge
+
+	// Counter	group, rule_id, mute_rule_id, datasource_id	告警静默触发次数（按分组、规则ID、静默规则ID、数据源ID分类）
+	CounterMuteTotal *prometheus.CounterVec
+
+	// Counter	datasource, stage, busi_group, rule_id	规则评估失败次数（按数据源、阶段、业务组、规则ID分类）
+	CounterRuleEvalErrorTotal *prometheus.CounterVec
+
+	// Counter	-	心跳检测失败次数
+	CounterHeartbeatErrorTotal *prometheus.CounterVec
+
+	// Counter	group	子事件处理总数（按分组分类）
+	CounterSubEventTotal *prometheus.CounterVec
+
+	// Gauge	rule_id, datasource_id, ref	评估查询返回的时间序列数量（按规则ID、数据源ID、查询引用分类）
+	GaugeQuerySeriesCount *prometheus.GaugeVec
+
+	// Gauge	通知记录队列的当前大小
+	GaugeNotifyRecordQueueSize prometheus.Gauge
 }
 
 func NewSyncStats() *Stats {

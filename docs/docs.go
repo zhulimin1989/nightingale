@@ -15,6 +15,36 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/n9e/auth/callback/oauth": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "获取JSON",
+                "tags": [
+                    "菜单"
+                ],
+                "summary": "登录回调",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/center_router.CallbackOutput"
+                        }
+                    }
+                }
+            }
+        },
         "/builtin-metric-filters": {
             "get": {
                 "description": "从系统中获取内置的度量过滤器信息",
@@ -31,18 +61,148 @@ const docTemplate = `{
                 "responses": {}
             }
         }
+    },
+    "definitions": {
+        "center_router.CallbackOutput": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "redirect": {
+                    "type": "string"
+                },
+                "refresh_token": {
+                    "type": "string"
+                },
+                "user": {
+                    "$ref": "#/definitions/models.User"
+                }
+            }
+        },
+        "models.BusiGroupRes": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.User": {
+            "type": "object",
+            "properties": {
+                "admin": {
+                    "description": "是否为管理员(方便前端使用)",
+                    "type": "boolean"
+                },
+                "belong": {
+                    "description": "归属信息",
+                    "type": "string"
+                },
+                "busi_groups": {
+                    "description": "业务组资源",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.BusiGroupRes"
+                    }
+                },
+                "contacts": {
+                    "description": "联系方式（内容为 map[string]string 结构）\n注意：这里我们明确指定其类型为 json.RawMessage，以便 swag 能正确识别。\n@param Contacts.body.json.type json.RawMessage",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "create_at": {
+                    "description": "创建时间戳\nswagger:strfmt int64",
+                    "type": "integer"
+                },
+                "create_by": {
+                    "description": "创建者",
+                    "type": "string"
+                },
+                "email": {
+                    "description": "邮箱",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "用户ID\nswagger:strfmt int64",
+                    "type": "integer"
+                },
+                "last_active_time": {
+                    "description": "最后活跃时间戳",
+                    "type": "integer"
+                },
+                "maintainer": {
+                    "description": "是否给管理员发消息（0:not send 1:send）",
+                    "type": "integer"
+                },
+                "nickname": {
+                    "description": "昵称",
+                    "type": "string"
+                },
+                "phone": {
+                    "description": "手机号码",
+                    "type": "string"
+                },
+                "portrait": {
+                    "description": "头像URL",
+                    "type": "string"
+                },
+                "roles": {
+                    "description": "角色列表(用于与前端交互)",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "update_at": {
+                    "description": "更新时间戳\nswagger:strfmt int64",
+                    "type": "integer"
+                },
+                "update_by": {
+                    "description": "更新者",
+                    "type": "string"
+                },
+                "user_groups": {
+                    "description": "用户组资源",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.UserGroupRes"
+                    }
+                },
+                "username": {
+                    "description": "用户名",
+                    "type": "string"
+                }
+            }
+        },
+        "models.UserGroupRes": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        }
     }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "2.0.0",
+	Version:          "",
 	Host:             "",
 	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "nightingale API",
-	Description:      "基于Gin的前后端分离权限管理系统的接口文档",
-	InfoInstanceName: "admin",
+	Title:            "",
+	Description:      "",
+	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",
 	RightDelim:       "}}",

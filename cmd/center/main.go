@@ -14,6 +14,8 @@ import (
 
 	"github.com/toolkits/pkg/net/tcpx"
 	"github.com/toolkits/pkg/runner"
+
+	_ "github.com/ccfos/nightingale/v6/docs" // 导入生成的 docs 包
 )
 
 var (
